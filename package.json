@@ -1,0 +1,23 @@
+{
+  "name": "dmitry-satellite-stream",
+  "version": "0.0.1",
+  "description": "get satellite location and movement data",
+  "main": "./lib/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "./bin/IssLocationStream",
+  "keywords": [
+    "satellite",
+    "location",
+    "movement",
+    "data",
+    "stream"
+  ],
+  "author": "white.dmitry@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "https": "^1.0.0",
+    "stream": "0.0.2"
+  }
+}
