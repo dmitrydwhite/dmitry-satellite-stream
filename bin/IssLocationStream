@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-
-var App = require('../lib/IssLocationStream');
-
-new App(process.argv[2], process.argv[3]);
