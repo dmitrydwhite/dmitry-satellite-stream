@@ -1,6 +1,6 @@
 {
   "name": "dmitry-satellite-stream",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "stream satellite location and movement data",
   "main": "./lib/IssLocationStream.js",
   "scripts": {
