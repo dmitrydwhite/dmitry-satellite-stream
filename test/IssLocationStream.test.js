@@ -219,4 +219,79 @@ describe('IssLocationStream', function () {
       expect(pushStub.calledWith(valToObj)).to.be.true;
     });
   });
+
+  describe("calculateChange", function () {
+    it("returns the object unchanged if it has a prop indicating it's an error", function () {
+      var errorObjects = [{
+        error: true
+      }, {
+        errno: true
+      }, {
+        status: true
+      }];
+
+      for(let e=0; e<errorObjects.length; e++) {
+        expect(ISS.calculateChange(errorObjects[e])).to.equal(errorObjects[e]);
+      }
+    });
+
+    it("sets the passed object as previousObj, and returns it unchanged, if there is no previousObj", function () {
+      var testObj = { testProp: true };
+
+      expect(ISS.calculateChange(testObj)).to.equal(testObj);
+      expect(ISS.previousObj).to.equal(testObj);
+    });
+
+    it("calculates differences and adds them to the passed object if there is a previousObj", function () {
+      var addedProps = ['latitudeDeltaPerSecond', 'longitudeDeltaPerSecond'];
+      var prevObj = {
+        timestamp: 5,
+        longitude: 23,
+        latitude: 99
+      };
+      var currObj = {
+        timestamp: 8,
+        longitude: -1,
+        latitude: -3
+      };
+      var result;
+
+      ISS.previousObj = prevObj;
+
+      result = ISS.calculateChange(currObj);
+
+      for (let p=0; p<addedProps.length; p++) {
+        expect(result.hasOwnProperty(addedProps[p])).to.be.true;
+        expect(result[addedProps[p]]).to.have.a.value;
+      }
+    });
+  });
+
+  describe("handleError", function () {
+    var expectedErrProps = ['error', 'message'];
+
+    it("returns an object with no error indicators unchanged", function () {
+      var nonErrorObj = {allIsGood: true};
+
+      expect(ISS.handleError(nonErrorObj)).to.equal(nonErrorObj);
+    });
+
+    it("converts an object with an errno property to the expected format", function () {
+      var errnoObj = {errno: true};
+      var result = ISS.handleError(errnoObj);
+
+      for (let p=0; p<expectedErrProps.length; p++) {
+        expect(result.hasOwnProperty(expectedErrProps[p])).to.be.true;
+      }
+    });
+
+    it("converts an object with a status property to the expected format", function () {
+      var statusObj = {status: true};
+      var result = ISS.handleError(statusObj);
+
+      for (let p=0; p<expectedErrProps.length; p++) {
+        expect(result.hasOwnProperty(expectedErrProps[p])).to.be.true;
+      }
+    });    
+  });
 });
