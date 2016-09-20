@@ -193,7 +193,7 @@ describe('IssLocationStream', function () {
       var async;
 
       async = ISS.getDataFromSource();
-      async.resolve();
+      async.resolve('{ "mockProperty": "mockValue" }');
 
       expect(ISS.resps).to.equal(101);
     });
@@ -204,18 +204,19 @@ describe('IssLocationStream', function () {
 
       async = ISS.getDataFromSource();
       ISS.startReq = 42;
-      async.resolve();
+      async.resolve('{ "mockProperty": "mockValue" }');
 
       expect(ISS.lag).to.equal(7);
     });
 
     it("calls push with the passed value", function () {
-      var testVal = 'random value from data source';
+      var testVal = '{ "mockProperty": "mockValue" }';
+      var valToObj = JSON.parse(testVal);
       var async = ISS.getDataFromSource();
 
-      async.resolve(testVal);
+      async.resolve('{ "mockProperty": "mockValue" }');
 
-      expect(pushStub.calledWith(testVal)).to.be.true;
+      expect(pushStub.calledWith(valToObj)).to.be.true;
     });
   });
 });

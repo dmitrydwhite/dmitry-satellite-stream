@@ -6,7 +6,7 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
-describe("SatLoc", function () {
+describe.skip("SatLoc", function () {
   const sat = require('../lib/SatLoc');
   var SAT = null;
 
@@ -25,5 +25,5 @@ describe("SatLoc", function () {
     expect(SAT).to.be.an('object');
   });
 
-  
+
 });
