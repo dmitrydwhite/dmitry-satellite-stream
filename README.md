@@ -15,7 +15,7 @@ To use in a project:
 ```
 var IssStream = require('dmitry-satellite-stream');
 // Or
-import IssStream from 'dmitry-satellite-stream');
+import IssStream from 'dmitry-satellite-stream';
 
 ...
 
