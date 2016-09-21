@@ -44,7 +44,7 @@ describe('IssLocationStream', function () {
     beforeEach(function () {
       ISS.props.validSatIds = ['testOne', 'testTwo'];
       ISS.props.DEFAULT_SAT_ID = 'testOne';
-    })
+    });
 
     it("returns the passed sat ID if it's valid", function () {
       expect(ISS.getSatId('testOne')).to.equal('testOne');
@@ -52,6 +52,37 @@ describe('IssLocationStream', function () {
 
     it("returns the default sat ID if the passed ID is not valid", function () {
       expect(ISS.getSatId('testThree')).to.equal('testOne');
+    });
+  });
+
+  describe("setOptions", function () {
+    var validPropsTrue = null;
+    var validPropsFalse = null;
+    var invalidProps = null;
+
+    beforeEach(function () {
+      ISS.props.supportedOpts = ['testValidProp'];
+      
+      validPropsTrue = {
+        testValidProp: true
+      };
+      
+      validPropsFalse = {
+        testValidProp: false
+      };
+
+      invalidProps = {
+        testInvalidProp: true
+      };
+    });
+
+    it("returns an object with props set if the passed props are valid", function () {
+      expect(ISS.setOptions(validPropsTrue)).to.deep.equal(validPropsTrue);
+      expect(ISS.setOptions(validPropsFalse)).to.deep.equal(validPropsFalse);
+    });
+
+    it("will not set an invalid prop if the prop isn't valid", function () {
+      expect(ISS.setOptions(invalidProps)['testInvalidProp']).to.be.undefined;
     });
   });
 
@@ -218,6 +249,15 @@ describe('IssLocationStream', function () {
 
       expect(pushStub.calledWith(valToObj)).to.be.true;
     });
+
+    it("handles error if Promise is rejected", function () {
+      var handleErrorStub = sandbox.stub(ISS, 'handleError');
+      var async = ISS.getDataFromSource();
+
+      async.reject();
+
+      expect(handleErrorStub).to.be.called;
+    });
   });
 
   describe("calculateChange", function () {
@@ -249,21 +289,28 @@ describe('IssLocationStream', function () {
         longitude: 23,
         latitude: 99
       };
-      var currObj = {
+      var currObjs = [{
         timestamp: 8,
         longitude: -1,
         latitude: -3
-      };
+      }, {
+        timestamp: 12,
+        longitude: 18,
+        latitude: 42
+      }];
       var result;
 
       ISS.previousObj = prevObj;
 
-      result = ISS.calculateChange(currObj);
-
-      for (let p=0; p<addedProps.length; p++) {
-        expect(result.hasOwnProperty(addedProps[p])).to.be.true;
-        expect(result[addedProps[p]]).to.have.a.value;
+      for (let curr=0; curr<currObjs.length; curr++) {
+        result = ISS.calculateChange(currObjs[curr]);
+        
+        for (let p=0; p<addedProps.length; p++) {
+          expect(result.hasOwnProperty(addedProps[p])).to.be.true;
+          expect(result[addedProps[p]]).to.have.a.value;
+        }
       }
+
     });
   });
 
