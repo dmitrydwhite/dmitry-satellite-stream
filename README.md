@@ -2,6 +2,9 @@
 
 A Node Module that creates a readable stream to track the location of satellites... currently limited to the ISS, but that is still pretty cool.
 
+#### Caveat
+I decided to use some of the ES6 syntax that I am learning in my own time on this project as well; the upshot is that this module wants Node v4 or better.  NPM will give you a friendly reminder if you `npm install` this with a lower version of Node.
+
 #### Implementation
 
 To download:
