@@ -67,7 +67,7 @@ options can be set after instantiation using the method `setOptions`;
 
 ```
 /** @example */
-const IssStream = require('dmitry-sateillite-stream');
+const IssStream = require('dmitry-satellite-stream');
 
 var myIssStream = new IssStream('25544', 1000);
 
